@@ -1,14 +1,14 @@
 #!/bin/bash
 
-DIR=.
+ROOTDIR=.
 PREFIX="Advanced options for Ubuntu>Ubuntu, with Linux"
 
 function updatekernel() {
-	KERNEL=$(head -n 1 $DIR/kernelversion)
+	KERNEL=$(head -n 1 $ROOTDIR/kernelversion)
 	DEFAULT="$PREFIX $KERNEL"
 
 	if [ ! $KERNEL ]; then
-		echo > $DIR/FINISHED
+		echo > $ROOTDIR/FINISHED
 		exit
 	fi
 
@@ -16,13 +16,13 @@ function updatekernel() {
 		sudo grub-reboot "$DEFAULT"
 		sudo reboot
 	else
-		sed -i 1d $DIR/kernelversion
+		sed -i 1d $ROOTDIR/kernelversion
 	fi
 }
 
 updatekernel
 sleep 5
 
-$DIR/test.sh
+$ROOTDIR/test.sh
 
 updatekernel

@@ -1,6 +1,13 @@
 #!/bin/bash
 
-DIR=$(pwd)
+if [ $1 ]; then
+	TARGET=$1
+else
+	TARGET=simple
+fi
+
+ROOTDIR=$(pwd)
+SRCDIR=$ROOTDIR/demo/$TARGET
 USER=$(whoami)
 
 ## make sudo to no password
@@ -12,11 +19,15 @@ mkdir -p ~/.config/autostart
 echo "
 [Desktop Entry]
 Type=Application
-Exec=$DIR/autotest.sh
+Exec=$ROOTDIR/autotest.sh
 Name=Autotest Script
 Comment=Run after desktop
 " > ~/.config/autostart/autotest.desktop
 
 ## update current directory
-sed -i "s|^DIR=.*|DIR=$DIR|" $DIR/autotest.sh
-sed -i "s|^DIR=.*|DIR=$DIR|" $DIR/test.sh
+sed -i "s|^ROOTDIR=.*|ROOTDIR=$ROOTDIR|" $ROOTDIR/autotest.sh
+sed -i "s|^ROOTDIR=.*|ROOTDIR=$ROOTDIR|" $SRCDIR/test.sh
+sed -i "s|^SRCDIR=.*|SRCDIR=$SRCDIR|"    $SRCDIR/test.sh
+
+rm -fr test.sh
+ln -s $SRCDIR/test.sh .
